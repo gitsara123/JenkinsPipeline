@@ -1,34 +1,25 @@
 pipeline {
     agent any
-    tools {
-        maven 'M3'  // Assure-toi que 'M3' est bien configuré dans Jenkins
-    }
+
     stages {
-        stage('Preparation') {
+        stage('Hello') {
             steps {
-                git 'https://github.com/jglick/simple-maven-project-with-tests.git'
+                echo 'Hello World'
             }
         }
-        stage('Build') {
+        stage('BUILD') {
             steps {
-                script {
-                    try {
-                        if (isUnix()) {
-                            sh "'${tool 'M3'}/bin/mvn' -Dmaven.test.failure.ignore clean package"
-                        } else {
-                            bat "\"${tool 'M3'}\\bin\\mvn\" -Dmaven.test.failure.ignore clean package"
-                        }
-                    } catch (Exception e) {
-                        echo "Erreur lors du build : ${e}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                }
+                echo 'DEVELOPMENT'
             }
         }
-        stage('Results') {
+        stage('TEST') {
             steps {
-                junit '**/target/surefire-reports/TEST-*.xml'
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                echo 'TESTING'
+            }
+        }
+        stage('DEPLOY') {
+            steps {
+                echo 'MISE EN PRODUCTION'
             }
         }
     }
